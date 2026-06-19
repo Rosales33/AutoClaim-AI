@@ -1,0 +1,26 @@
+# ── Dataset & processed data (too large for GitHub) ──────────────────────────
+CarDD_release/
+data/
+
+# ── Course material (not part of the submission) ─────────────────────────────
+ContentCoveredCourse/
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Jupyter checkpoints ───────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
