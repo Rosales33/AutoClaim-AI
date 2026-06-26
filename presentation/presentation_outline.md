@@ -22,10 +22,10 @@
 
 **The problem: Manual first-review is slow and expensive**
 
-- Insurance adjusters spend 15–30 minutes on first-review of each car damage photo
+- Each claim arrives as a set of photos + metadata. An adjuster must open the file, inspect every image, identify the damage type, judge severity, decide the routing, and log it in the system — **15–30 minutes per claim**, not per photo
 - High-volume claims create backlogs → slower payouts → unhappy customers
-- Human reviewers are inconsistent; fatigue increases error rates
-- **Cost**: A mid-sized insurer handling 500 claims/day → ~200 hours/day in manual triage
+- Human reviewers are inconsistent: the same claim can be routed differently depending on the adjuster, their experience, or time of day
+- **Cost**: A mid-sized insurer handling 500 claims/day → ~200 hours/day in first-level triage alone
 
 **Pain points** (use a 2×2 grid):
 | | Low Severity | High Severity |

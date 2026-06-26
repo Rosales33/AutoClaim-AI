@@ -6,9 +6,9 @@ triage recommendation.  Thresholds are read from config.py so they can
 be tuned without touching this file.
 
 Triage levels:
-    PRIORITY ASSESSMENT  — severe damage + sufficient confidence
-    FAST-TRACK           — minor damage + high confidence
-    HUMAN REVIEW         — low confidence or ambiguous case
+    PRIORITY ASSESSMENT  — severe damage + confidence ≥ 70%
+    FAST-TRACK           — minor damage (dent/scratch) + confidence ≥ 80%
+    HUMAN REVIEW         — everything else (low confidence, unclear image)
 """
 
 import sys
@@ -25,24 +25,17 @@ def get_triage_decision(predicted_class: str, confidence: float) -> dict:
     Apply business rules to produce a triage recommendation.
 
     Rules (ordered by priority):
-    1. Confidence below LOW threshold → "Human Review Required"
-       Rationale: a model that is uncertain should not make automated decisions.
-       The risk of a wrong automatic routing exceeds the cost of one human review.
+    1. Severe class AND confidence >= SEVERE threshold → "Priority Assessment"
+       Safety-critical damage (tire flat, glass shatter, structural crack,
+       broken lamp) is escalated immediately for human inspection.
 
-    2. Severe class AND confidence >= SEVERE threshold → "Priority Assessment"
-       Rationale: safety-critical damage (tire flat, glass shatter, structural
-       crack, broken lamp) carries liability risk.  Even at moderate confidence
-       these cases should be escalated quickly.
+    2. Minor class AND confidence >= HIGH threshold → "Fast-Track"
+       High-confidence dent/scratch predictions are routed automatically,
+       saving ~15 min per claim in manual first review.
 
-    3. Minor class AND confidence >= HIGH threshold → "Fast-Track"
-       Rationale: a high-confidence prediction on low-severity damage (scratch,
-       dent) can be automatically routed to standard processing, saving ~15 min
-       per claim in manual first review.
-
-    4. Otherwise → "Human Review Required"
-       Rationale: covers edge cases not matched above (moderate confidence on
-       severe class below the severe threshold, or moderate confidence on minor
-       class below the fast-track threshold).
+    3. Otherwise → "Human Review Required"
+       Covers: severe damage below the priority threshold, minor damage below
+       the fast-track threshold, and unclear or low-quality images.
 
     Parameters
     ----------
@@ -55,20 +48,7 @@ def get_triage_decision(predicted_class: str, confidence: float) -> dict:
     """
     cls = predicted_class.lower()
 
-    # Rule 1 — low confidence always goes to human review
-    if confidence < config.TRIAGE_LOW_CONFIDENCE:
-        return {
-            "decision": "Human Review Required",
-            "level":    "review",
-            "reason":   (
-                f"Model confidence is {confidence:.1%}, which is below the "
-                f"minimum threshold of {config.TRIAGE_LOW_CONFIDENCE:.0%}. "
-                "A claims handler should verify this image manually."
-            ),
-            "icon": "⚠️",
-        }
-
-    # Rule 2 — severe damage with sufficient confidence → priority
+    # Rule 1 — severe damage with sufficient confidence → priority
     if cls in config.SEVERE_CLASSES and confidence >= config.TRIAGE_SEVERE_CONFIDENCE:
         return {
             "decision": "Priority Assessment",
@@ -81,7 +61,7 @@ def get_triage_decision(predicted_class: str, confidence: float) -> dict:
             "icon": "🔴",
         }
 
-    # Rule 3 — minor damage with high confidence → fast-track
+    # Rule 2 — minor damage with high confidence → fast-track
     if cls not in config.SEVERE_CLASSES and confidence >= config.TRIAGE_HIGH_CONFIDENCE:
         return {
             "decision": "Fast-Track Claim",
@@ -94,7 +74,7 @@ def get_triage_decision(predicted_class: str, confidence: float) -> dict:
             "icon": "🟢",
         }
 
-    # Rule 4 — everything else
+    # Rule 3 — everything else → human review
     return {
         "decision": "Human Review Required",
         "level":    "review",

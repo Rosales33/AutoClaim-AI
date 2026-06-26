@@ -59,9 +59,8 @@ BRIGHTNESS_RANGE = (0.8, 1.2)  # Beyond class material — see data_utils.py
 CLASS_WEIGHT_MAX = 2.5
 
 # ─── Triage thresholds (configurable) ─────────────────────────────────────────
-TRIAGE_HIGH_CONFIDENCE   = 0.80  # fast-track threshold
-TRIAGE_LOW_CONFIDENCE    = 0.60  # human review below this
-TRIAGE_SEVERE_CONFIDENCE = 0.70  # severe categories need this to be "priority"
+TRIAGE_HIGH_CONFIDENCE   = 0.80  # minor class (dent/scratch) fast-track threshold
+TRIAGE_SEVERE_CONFIDENCE = 0.70  # severe class priority threshold
 
 # Damage categories considered severe (high-repair / safety-critical)
 SEVERE_CLASSES = {"glass shatter", "tire flat", "lamp broken", "crack"}

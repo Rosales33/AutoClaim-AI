@@ -96,10 +96,10 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("**Triage thresholds**")
-    st.markdown(f"🟢 **Fast-Track** — minor class + conf ≥ {config.TRIAGE_HIGH_CONFIDENCE:.0%}")
-    st.markdown(f"🔴 **Priority** — severe class + conf ≥ {config.TRIAGE_SEVERE_CONFIDENCE:.0%}")
-    st.markdown(f"🟡 **Human Review** — middle zone ({config.TRIAGE_LOW_CONFIDENCE:.0%}–{config.TRIAGE_HIGH_CONFIDENCE:.0%})")
-    st.markdown(f"⚠️ **Human Review** — any class + conf < {config.TRIAGE_LOW_CONFIDENCE:.0%}")
+    st.markdown(f"🟢 **Fast-Track** — dent/scratch + conf ≥ {config.TRIAGE_HIGH_CONFIDENCE:.0%}")
+    st.markdown(f"🔴 **Priority** — severe damage + conf ≥ {config.TRIAGE_SEVERE_CONFIDENCE:.0%}")
+    st.markdown(f"🟡 **Human Review** — dent/scratch + conf < {config.TRIAGE_HIGH_CONFIDENCE:.0%}")
+    st.markdown(f"🟡 **Human Review** — severe damage + conf < {config.TRIAGE_SEVERE_CONFIDENCE:.0%}")
     st.caption(
         "Minor = dent, scratch  |  "
         f"Severe = {', '.join(sorted(config.SEVERE_CLASSES))}"

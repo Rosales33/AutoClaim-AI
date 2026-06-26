@@ -272,12 +272,13 @@ Phase B: unfreeze top 30 base layers, fine-tune with LR/10.
 
 ## Triage Thresholds (configurable in config.py)
 
-| Rule | Threshold | Decision |
-|------|-----------|---------|
-| confidence < 60% | any class | Human Review |
-| severe class + conf ≥ 70% | crack, glass shatter, lamp broken, tire flat | Priority Assessment |
-| minor class + conf ≥ 80% | dent, scratch | Fast-Track |
-| all other cases | — | Human Review |
+| Prediction | Confidence | Decision |
+|------------|------------|----------|
+| dent / scratch | ≥ 80% | 🟢 Fast-Track |
+| dent / scratch | < 80% | 🟡 Human Review |
+| severe damage (crack, glass shatter, lamp broken, tire flat) | ≥ 70% | 🔴 Priority Assessment |
+| severe damage | < 70% | 🟡 Human Review |
+| unclear / bad image | any | 🟡 Human Review |
 
 ---
 
